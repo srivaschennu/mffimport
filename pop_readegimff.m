@@ -149,8 +149,6 @@ if ~isempty(chanlocfile)
     EEG = fixegilocs(EEG,chanlocpath);
 end
 
-EEG = eeg_checkset(EEG);
-
 if nargin < 1
     command = sprintf('EEG = pop_readegi(''%s'', %s);', filename, vararg2str(varargin) );
 end;
