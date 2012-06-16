@@ -112,7 +112,13 @@ catch err
 end
 
 fprintf('Reading data.\n');
-epochStart = [0 mffhdr.epochSize(1:end-1)+1];
+
+epochStart = zeros(1,length(mffhdr.epochSize));
+epochStart(1) = 1;
+for e = 2:length(mffhdr.epochSize)
+    epochStart(e) = epochStart(e-1) + mffhdr.epochSize(e-1);
+end
+
 if mffhdr.nTrials == 1
     if isempty(firstepoch)
         firstepoch = 1;
@@ -121,11 +127,6 @@ if mffhdr.nTrials == 1
     
     if isempty(lastepoch)
         lastepoch = length(epochStart);
-    end
-    readEnd = readStart + sum(mffhdr.epochSize(firstepoch:lastepoch)) - 1;
-    
-    if readStart == 0
-        readStart = 1;
     end
     
     nSampRead = sum(mffhdr.epochSize(firstepoch:lastepoch));
@@ -154,7 +155,7 @@ if mffhdr.nTrials == 1
         chunkStart = chunkEnd+1;
     end
     
-    evt = evt(cell2mat({evt.sample}) >= readStart & cell2mat({evt.sample}) <= readEnd);
+    evt = evt(cell2mat({evt.sample}) >= readStart & cell2mat({evt.sample}) <= readStart+nSampRead);
     for e = 1:length(evt)
         evt(e).sample = evt(e).sample - readStart + 1;
     end
