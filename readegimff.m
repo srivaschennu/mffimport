@@ -7,8 +7,8 @@
 % Inputs:
 %   filename - string with full path to file
 %   dtype    - type of data to read (EEG or PIB)
-%   firstepoch - index of first recording epoch to read from data
-%   lastepoch - index of last recording epoch to read from data
+%   firstsample - index of first sample to read from data
+%   lastsample - index of last sample to read from data
 %
 % Outputs:
 %   head - data header structure containing the following fields
@@ -51,7 +51,7 @@
 % Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 
-function [head,evt,data] = readegimff(filename,dtype,firstepoch,lastepoch)
+function [head,evt,data] = readegimff(filename,dtype,firstsample,lastsample)
 
 %%%% size of data chunk to read at one go. %%%%
 CHUNKSIZE = 500000;
@@ -113,34 +113,31 @@ end
 
 fprintf('Reading data.\n');
 
-epochStart = zeros(1,length(mffhdr.epochSize));
-epochStart(1) = 1;
-for e = 2:length(mffhdr.epochSize)
-    epochStart(e) = epochStart(e-1) + mffhdr.epochSize(e-1);
-end
-
 if mffhdr.nTrials == 1
-    if isempty(firstepoch)
-        firstepoch = 1;
-    end        
-    readStart = epochStart(firstepoch);
-    
-    if isempty(lastepoch)
-        lastepoch = length(epochStart);
+    if isempty(firstsample)
+        firstsample = 1;
+    elseif firstsample < 1
+        error('%s: first sample to read must be >= 1.',mfilename);
     end
     
-    nSampRead = sum(mffhdr.epochSize(firstepoch:lastepoch));
+    if isempty(lastsample)
+        lastsample = mffhdr.nSamples;
+    elseif lastsample > mffhdr.nSamples
+        error('%s: last sample to read must be <= %d.',mfilename,mffhdr.nSamples);
+    end
+    
+    nSampRead = lastsample-firstsample+1;
     data = zeros(mffhdr.nChans,nSampRead);
 
     chunkStart = 1;
-    while chunkStart <= nSampRead
+    while firstsample+chunkStart <= lastsample
         chunkEnd = min(chunkStart+CHUNKSIZE-1,nSampRead);
         
-        fprintf('Reading samples %d:%d of %d...\n',readStart+chunkStart-1,readStart+chunkEnd-1,nSampRead);
+        fprintf('Reading samples %d:%d of %d...\n',firstsample+chunkStart-1,firstsample+chunkEnd-1,nSampRead);
         
         try
-            data(:,chunkStart:chunkEnd) = read_mff_data(filename,'sample',readStart+chunkStart-1,readStart+chunkEnd-1,...
-                1:mffhdr.nChans,dtype);
+            data(:,chunkStart:chunkEnd) = read_mff_data(filename,'sample',firstsample+chunkStart-1,...
+                firstsample+chunkEnd-1,1:mffhdr.nChans,dtype);
         catch err
             if strcmp(err.identifier,'MATLAB:Java:GenericException') && ...
                     ~isempty(strfind(err.message,'java.lang.OutOfMemoryError'))
@@ -155,9 +152,9 @@ if mffhdr.nTrials == 1
         chunkStart = chunkEnd+1;
     end
     
-    evt = evt(cell2mat({evt.sample}) >= readStart & cell2mat({evt.sample}) <= readStart+nSampRead);
+    evt = evt(cell2mat({evt.sample}) >= firstsample & cell2mat({evt.sample}) <= lastsample);
     for e = 1:length(evt)
-        evt(e).sample = evt(e).sample - readStart + 1;
+        evt(e).sample = evt(e).sample - firstsample + 1;
     end
     
 else

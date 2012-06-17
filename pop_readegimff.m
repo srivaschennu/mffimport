@@ -47,44 +47,49 @@ if nargin < 1
     end;
     filename = [filepath filename];
     
-    promptstr    = { 'Data to import (''EEG'' or ''PIB'')' };
-    inistr       = { 'EEG' };
+    promptstr    = {
+        'Data to import (''EEG'' or ''PIB''):'
+        'Channel location file:'
+        'First sample to read:'
+        'Last sample to read:' };
+    inistr       = { 'EEG', 'auto', '', '' };
     result       = inputdlg2( promptstr, 'Import EGI MFF file -- pop_readegimff()', 1, inistr, 'pop_readegimff');
     if isempty(result); return; end;
+
     dtype        = result{1};
     if ~strcmp(dtype,'EEG') && ~strcmp(dtype,'PIB')
         error('Type of data to import must be ''EEG'' or ''PIB''');
     end
     
-    [head evt data] = readegimff(filename,dtype); % read EGI file header
+    chanlocfile = result{2};
+    firstsample = str2num(result{3});
+    lastsample = str2num(result{4});
     
-    chanlocfile = '';
-    switch head.nchan
-        case 129
-            chanlocfile = 'GSN-HydroCel-129.sfp';
-        case 257
-            chanlocfile = 'GSN-HydroCel-257.sfp';
-        case 8
-            chanlocfile = 'PIB.sfp';
-    end;
-    promptstr    = { 'Channel location file' };
-    inistr       = { chanlocfile };
-    result       = inputdlg2( promptstr, 'Import EGI MFF file -- pop_readegimff()', 1, inistr, 'pop_readegimff');
-    if isempty(result); return; end;
-    chanlocfile      = result{1};
+    [head evt data] = readegimff(filename,dtype,firstsample,lastsample);
+    
+    if strcmp(chanlocfile,'auto')
+        switch head.nchan
+            case 129
+                chanlocfile = 'GSN-HydroCel-129.sfp';
+            case 257
+                chanlocfile = 'GSN-HydroCel-257.sfp';
+            case 8
+                chanlocfile = 'PIB.sfp';
+        end
+    end
     
 else
     param = finputcheck(varargin, {'chanlocfile', 'string', [], 'auto'; ...
         'datatype', 'string', { 'EEG', 'PIB' }, 'EEG'; ...
-        'firstepoch', 'integer', [], []; ...
-        'lastepoch', 'integer', [], []; ...
+        'firstsample', 'integer', [], []; ...
+        'lastsample', 'integer', [], []; ...
         });
     dtype = param.datatype;
     chanlocfile = param.chanlocfile;
-    firstepoch = param.firstepoch;
-    lastepoch = param.lastepoch;
+    firstsample = param.firstsample;
+    lastsample = param.lastsample;
     
-    [head evt data] = readegimff(filename,dtype,firstepoch,lastepoch); % read EGI file header
+    [head evt data] = readegimff(filename,dtype,firstsample,lastsample); % read EGI file header
 end
 
 % load data
