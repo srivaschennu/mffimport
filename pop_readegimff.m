@@ -50,8 +50,8 @@ if nargin < 1
     promptstr    = {
         'Data to import (''EEG'' or ''PIB''):'
         'Channel location file:'
-        'First sample to read:'
-        'Last sample to read:' };
+        'First sample (default = 1):'
+        'Last sample (default = end):' };
     inistr       = { 'EEG', 'auto', '', '' };
     result       = inputdlg2( promptstr, 'Import EGI MFF file -- pop_readegimff()', 1, inistr, 'pop_readegimff');
     if isempty(result); return; end;
