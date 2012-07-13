@@ -152,11 +152,12 @@ if mffhdr.nTrials == 1
         chunkStart = chunkEnd+1;
     end
     
-    evt = evt(cell2mat({evt.sample}) >= firstsample & cell2mat({evt.sample}) <= lastsample);
-    for e = 1:length(evt)
-        evt(e).sample = evt(e).sample - firstsample + 1;
+    if ~isempty(evt)
+        evt = evt(cell2mat({evt.sample}) >= firstsample & cell2mat({evt.sample}) <= lastsample);
+        for e = 1:length(evt)
+            evt(e).sample = evt(e).sample - firstsample + 1;
+        end
     end
-    
 else
     try
         data = read_mff_data(filename,'epoch',1,mffhdr.nTrials,1:mffhdr.nChans,dtype);
