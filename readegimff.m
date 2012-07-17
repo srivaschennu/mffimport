@@ -2,7 +2,7 @@
 % (MFF) recording.
 %
 % Usage:
-%   >> [head,evt,data] = readegimffhdr(filename,dtype,epochs2read)
+%   >> [head,evt,data] = readegimff(filename,dtype,firstsample,lastsample)
 %
 % Inputs:
 %   filename - string with full path to file
