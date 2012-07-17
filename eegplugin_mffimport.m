@@ -16,3 +16,4 @@ comcnt = [ trystrs.no_check 'EEG = pop_readegimff();'     catchstrs.new_and_hist
 % create menus
 % ------------
 uimenu( menu, 'label', 'From EGI Net Station .MFF file', 'callback', comcnt, 'position', 3 );
+
