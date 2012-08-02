@@ -2,6 +2,8 @@ function EEG = fixegilocs(EEG, fileloc)
 
 alllocs = readlocs(fileloc);
 
+EEG.chaninfo.ndchanlocs = struct([]);
+
 if (EEG.nbchan == 128 || EEG.nbchan == 256) && length(alllocs) == EEG.nbchan+4
     ndchanlocs = [1 2 3 length(alllocs)]; %3 fiducial and 1 reference channel
     
