@@ -3,13 +3,13 @@
 % Usage:
 %   >> EEG = pop_readegimff;             % a window pops up
 %   >> EEG = pop_readegimff( filename );
-%   >> EEG = pop_readegimff( filename, dtype, chanlocfile );
-%   >> EEG = pop_readegimff( filename, dtype, chanlocfile, firstsample, lastsample );
+%   >> EEG = pop_readegimff( filename, ... );
 %
-% Inputs:
+% Required Inputs:
 %   filename       - EGI file name
-%   dtype          - Type of data to read ('EEG' or 'PIB')
-%   chanlocfile        - [string] channel location file name. Default is
+% Optional Inputs:
+%   datatype       - Type of data to read ('EEG' or 'PIB')
+%   chanlocfile    - [string] channel location file name. Default is
 %                    'auto' (autodetection)
 %   firstsample    - Index of first sample to read. Default is 1
 %   lastsample     - Index of last sample to read. Default is end
