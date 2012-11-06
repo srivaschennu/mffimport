@@ -13,6 +13,8 @@ switch objType
         objStr = 'com.egi.services.mff.api.SensorLayout';
     case com.egi.services.mff.api.MFFResourceType.kMFF_RT_Categories
         objStr = 'com.egi.services.mff.api.Categories';
+    case com.egi.services.mff.api.MFFResourceType.kMFF_RT_Subject
+        objStr = 'com.egi.services.mff.api.Subject';
     otherwise
         oldSchool = false;
 end
@@ -21,7 +23,8 @@ if oldSchool
         case {'com.egi.services.mff.api.Info',...
          'com.egi.services.mff.api.EventTrack',...
          'com.egi.services.mff.api.SensorLayout',...
-         'com.egi.services.mff.api.Categories'}
+         'com.egi.services.mff.api.Categories',...
+         'com.egi.services.mff.api.Subject'}
             theObject = javaObject(objStr, true);
             theObject = theObject.unmarshal(URI, true);
         case 'com.egi.services.mff.api.Signal'
