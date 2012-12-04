@@ -1,5 +1,12 @@
 function info = read_mff_info(filePath)
 
+mffjarpath = which('MFF-1.0.d0004.jar');
+if isempty(mffjarpath)
+    error('MFF-1.0.d0004.jar not found in path! Make sure the mffreader directory is in your MATLAB path');
+end
+
+javaaddpath(mffjarpath);
+
 if ~exist(filePath,'dir')
     error('Unable to open %s.',filePath);
 end
