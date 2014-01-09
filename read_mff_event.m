@@ -96,6 +96,7 @@ if eventtrackcount > 0
         end
     end
     eventInds = sortrows(eventInds);
+    sortedEvents = events;
     for p = 1:eventInd
         nextEventInd = eventInds(p,2);
         sortedEvents(p) = events(nextEventInd);
