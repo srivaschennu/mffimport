@@ -125,7 +125,9 @@ if numCategsFiles > 0 % should be either zero or one?
 %fprintf('seg diff %f\n', segEnd - segBegin)
             segBeginSamp = mff_nanos2Sample(segBegin, sampRate);
             segInd = find(epochBeginSamps == segBeginSamp);
-            epochLabels{segInd} = char(categLabel);
+            if ~isempty(categLabel)
+                epochLabels{segInd} = char(categLabel);
+            end
             time0 = aSeg.getEventBegin;
             time0Samp = mff_nanos2Sample(time0, sampRate);
             time0Samp = (time0Samp - segBeginSamp) + 1;

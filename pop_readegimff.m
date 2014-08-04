@@ -38,6 +38,10 @@
 
 function [EEG, command] = pop_readegimff(filename, varargin)
 
+if ~verLessThan('matlab','8.1')
+    error('MFFimport is currently only supported on MATLAB 2012b and earlier.'); 
+end
+
 EEG = [];
 command = '';
 
