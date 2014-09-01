@@ -13,7 +13,7 @@ beginTime = infoObj.getRecordTime();
 % Get event file names. 
 % Need to blend in events from different tracks
 % Sort by sample num (only should be necessary w multiple tracks
-eventtracknamelist = summaryInfo.mfffileObj.getEventTrackFiles();
+eventtracknamelist = summaryInfo.mfffileObj.getEventTrackList(false);
 eventtrackcount = eventtracknamelist.size();
 
 if eventtrackcount > 0
@@ -63,8 +63,8 @@ if eventtrackcount > 0
             eventTime = theEvent.getBeginTime;
 
             %Need to convert to samples (get sampling rate up above)
-            eventTimeInNS = MFFUtil.getTimeDifferenceInNanoseconds(eventTime , beginTime);
-            eventTimeInSamples = mff_nanos2Sample(eventTimeInNS, summaryInfo.sampRate);
+            eventTimeInMS = MFFUtil.getTimeDifferenceInMicroseconds(eventTime , beginTime);
+            eventTimeInSamples = mff_micros2Sample(eventTimeInMS, summaryInfo.sampRate);
             eventTimeInEpochSamples = samples2EpochSample(eventTimeInSamples, epochBeginSamps, epochNumSamps);
             if eventTimeInEpochSamples < 1
                 % Error: invalid sample number
