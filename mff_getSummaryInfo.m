@@ -69,6 +69,10 @@ binObj = mff_getObject(com.egi.services.mff.api.MFFResourceType.kMFF_RT_Signal, 
 blocks = binObj.getSignalBlocks();
 
 function [epochType epochBeginSamps epochNumSamps epochFirstBlocks epochLastBlocks epochLabels epochTime0] = getEpochInfos(mfffileObj, filePath, sampRate)
+
+infoObj = mff_getObject(com.egi.services.mff.api.MFFResourceType.kMFF_RT_Info, 'info.xml', filePath);
+mffver = infoObj.getMFFVersion;
+
 epochList = mff_getObject(com.egi.services.mff.api.MFFResourceType.kMFF_RT_Epochs, 'epochs.xml', filePath);
 epochListArray = epochList.getEpochs;
 numEpochs = epochListArray.size;
@@ -76,17 +80,25 @@ epochBeginSamps = zeros(1,numEpochs);
 epochNumSamps = zeros(1,numEpochs);
 epochFirstBlocks = zeros(1,numEpochs);
 epochLastBlocks = zeros(1,numEpochs);
-epochNumSamps = zeros(1,numEpochs);
 epochTime0 = zeros(1,numEpochs);
 epochLabels = cell(1,numEpochs);
+
 for p = 0:numEpochs-1
     anEpoch = epochListArray.get(p);
     epochBegin = anEpoch.getBeginTime();
     epochEnd = anEpoch.getEndTime();
     % Note: end time is first sample NOT in epoch.
-    epochBeginSamps(p+1) = mff_micros2Sample(epochBegin, sampRate);
+    if mffver == 0
+        epochBeginSamps(p+1) = mff_nanos2Sample(epochBegin, sampRate);
+    else
+        epochBeginSamps(p+1) = mff_micros2Sample(epochBegin, sampRate);
+    end
     epochTime0(p+1) = epochBeginSamps(p+1);
-    epochNumSamps(p+1) = mff_micros2Sample(epochEnd, sampRate) - epochBeginSamps(p+1);
+    if mffver == 0
+        epochNumSamps(p+1) = mff_nanos2Sample(epochEnd, sampRate) - epochBeginSamps(p+1);
+    else
+        epochNumSamps(p+1) = mff_micros2Sample(epochEnd, sampRate) - epochBeginSamps(p+1);
+    end
     epochFirstBlocks(p+1) = anEpoch.getFirstBlock;
     epochLastBlocks(p+1) = anEpoch.getLastBlock;
     epochLabels{p+1} = 'epoch';

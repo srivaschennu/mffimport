@@ -57,7 +57,6 @@ function [head,evt,data] = readegimff(filename,dtype,firstsample,lastsample)
 CHUNKSIZE = 500000;
 
 %%%% EGI MFF JAR library name. %%%%
-% MFFJARFILE = 'MFF-1.0.d0004.jar';
 MFFJARFILE = 'MFF-1.2.jar';
 
 head = [];
