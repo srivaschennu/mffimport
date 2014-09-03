@@ -82,7 +82,7 @@ if eventtrackcount > 0
                 
                 keyList = theEvent.getKeys;
                 for key = 1:keyList.size
-                    thisKey = keyList.elementAt(key-1);
+                    thisKey = keyList.get(key-1);
                     events(eventInd).codes{key,1} = (char(thisKey.getCode));
                     events(eventInd).codes{key,2} = str2double(char(thisKey.getData));
                     if isnan(events(eventInd).codes{key,2})
