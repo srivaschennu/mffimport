@@ -140,6 +140,8 @@ if ~isempty(chanlocfile)
     
     if strcmp(chanlocfile,'auto')
         switch head.nchan
+            case 33
+                chanlocfile = 'GSN-HydroCel-33.sfp';
             case 129
                 chanlocfile = 'GSN-HydroCel-129.sfp';
             case 257
