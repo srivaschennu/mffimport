@@ -160,7 +160,7 @@ if ~isempty(chanlocfile)
 end
 
 if nargin < 1
-    command = sprintf('EEG = pop_readegi(''%s'', %s);', filename, vararg2str(varargin) );
+    command = sprintf('EEG = pop_readegimff(''%s'', %s);', filename, vararg2str(varargin) );
 end;
 
 return;
