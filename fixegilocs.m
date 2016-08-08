@@ -4,7 +4,7 @@ alllocs = readlocs(fileloc);
 
 EEG.chaninfo.ndchanlocs = struct([]);
 
-if (EEG.nbchan == 32 || EEG.nbchan == 128 || EEG.nbchan == 256) && length(alllocs) == EEG.nbchan+4
+if length(alllocs) == EEG.nbchan+4
     ndchanlocs = [1 2 3 length(alllocs)]; %3 fiducial and 1 reference channel
     
     alllocs(1).type = 'FID';

@@ -72,6 +72,8 @@ if nargin < 1
     
     if strcmp(chanlocfile,'auto')
         switch head.nchan
+            case 65
+                chanlocfile = 'GSN-HydroCel-65.sfp';            
             case 129
                 chanlocfile = 'GSN-HydroCel-129.sfp';
             case 257
@@ -142,6 +144,8 @@ if ~isempty(chanlocfile)
         switch head.nchan
             case 33
                 chanlocfile = 'GSN-HydroCel-33.sfp';
+            case 65
+                chanlocfile = 'GSN-HydroCel-65.sfp';
             case 129
                 chanlocfile = 'GSN-HydroCel-129.sfp';
             case 257
