@@ -1,6 +1,6 @@
 function ver = eegplugin_mffimport(fig, trystrs, catchstrs)
 
-ver = 'mffimport1.0';
+ver = 'mffimport2.2';
 if nargin < 3
     error('eegplugin_mffimport requires 3 arguments');
 end;

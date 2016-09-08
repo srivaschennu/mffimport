@@ -43,12 +43,17 @@ command = '';
 
 if nargin < 1
     % ask user
-    [filename, filepath] = uigetfile('*','Choose an EGI MFF file -- pop_readegimff()');
+    % fix for windows suggested by Andy Nutter-Upham
+    if ispc || isunix
+        filename = uigetdir('.','Choose an EGI MFF file -- pop_readegimff()');
+    elseif ismac
+        [filename, filepath] = uigetfile('*','Choose an EGI MFF file -- pop_readegimff()');
+        filename = [filepath filename];
+    end
     drawnow;
     if filename == 0
         return;
     end;
-    filename = [filepath filename];
     
     promptstr    = {
         'Data to import (''EEG'' or ''PIB''):'
