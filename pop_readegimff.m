@@ -44,11 +44,11 @@ command = '';
 if nargin < 1
     % ask user
     % fix for windows suggested by Andy Nutter-Upham
-    if ispc || isunix
-        filename = uigetdir('.','Choose an EGI MFF file -- pop_readegimff()');
-    elseif ismac
+    if ismac
         [filename, filepath] = uigetfile('*','Choose an EGI MFF file -- pop_readegimff()');
         filename = [filepath filename];
+    else
+        filename = uigetdir('.','Choose an EGI MFF file -- pop_readegimff()');
     end
     drawnow;
     if filename == 0
