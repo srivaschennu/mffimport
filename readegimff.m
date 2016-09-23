@@ -56,9 +56,6 @@ function [head,evt,data] = readegimff(filename,dtype,firstsample,lastsample)
 %%%% size of data chunk to read at one go. %%%%
 CHUNKSIZE = 500000;
 
-%%%% EGI MFF JAR library name. %%%%
-MFFJARFILE = 'MFF-1.2.jar';
-
 head = [];
 evt = [];
 data = [];
@@ -77,14 +74,6 @@ else
         dtype = 0;
     end
 end
-    
-mffjarpath = which(MFFJARFILE);
-if isempty(mffjarpath)
-    error('%s not found in path! Make sure the mffreader directory is in your MATLAB path',MFFJARFILE);
-end
-
-javaaddpath(mffjarpath);
-
 
 fprintf('Reading header.\n');
 try
@@ -131,7 +120,7 @@ if mffhdr.nTrials == 1
     
     nSampRead = lastsample-firstsample+1;
     data = zeros(mffhdr.nChans,nSampRead);
-
+    
     chunkStart = 1;
     while firstsample+chunkStart <= lastsample
         chunkEnd = min(chunkStart+CHUNKSIZE-1,nSampRead);
@@ -182,5 +171,3 @@ head.nchan = mffhdr.nChans;
 head.samples = nSampRead;
 head.segments = mffhdr.nTrials;
 head.segsamps = nSampRead;
-
-javarmpath(mffjarpath);
