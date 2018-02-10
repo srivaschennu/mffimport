@@ -75,19 +75,6 @@ if nargin < 1
     
     [head evt data] = readegimff(filename,dtype,firstsample,lastsample);
     
-    if strcmp(chanlocfile,'auto')
-        switch head.nchan
-            case 65
-                chanlocfile = 'GSN-HydroCel-65.sfp';            
-            case 129
-                chanlocfile = 'GSN-HydroCel-129.sfp';
-            case 257
-                chanlocfile = 'GSN-HydroCel-257.sfp';
-            case 8
-                chanlocfile = 'PIB.sfp';
-        end
-    end
-    
 else
     param = finputcheck(varargin, {'chanlocfile', 'string', [], 'auto'; ...
         'datatype', 'string', { 'EEG', 'PIB' }, 'EEG'; ...
@@ -148,13 +135,13 @@ if ~isempty(chanlocfile)
     if strcmp(chanlocfile,'auto')
         switch head.nchan
             case 33
-                chanlocfile = 'GSN-HydroCel-33.sfp';
+                chanlocfile = 'GSN-HydroCel-33-Fidu.sfp';
             case 65
-                chanlocfile = 'GSN-HydroCel-65.sfp';
+                chanlocfile = 'GSN-HydroCel-65-Fidu.sfp';
             case 129
-                chanlocfile = 'GSN-HydroCel-129.sfp';
+                chanlocfile = 'GSN-HydroCel-129-Fidu.sfp';
             case 257
-                chanlocfile = 'GSN-HydroCel-257.sfp';
+                chanlocfile = 'GSN-HydroCel-257-Fidu.sfp';
             case 8
                 chanlocfile = 'PIB.sfp';
         end;
