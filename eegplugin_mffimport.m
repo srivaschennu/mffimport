@@ -27,7 +27,7 @@ mffjarfile = sprintf('%s%sMFF-1.2.jar',fileparts(mfilename('fullpath')),filesep)
 if all(cellfun(@isempty,strfind(javaclasspath('-all'),mffjarfile)))
     fid = fopen(javaclasspathfile,'a');
     if fid == -1
-        error('Could not open %s for writing.',javaclasspath);
+        error('Could not open %s for writing.',javaclasspathfile);
     end
     
     fprintf(fid,'\n%s',mffjarfile);
