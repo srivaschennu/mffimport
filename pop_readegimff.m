@@ -140,6 +140,8 @@ if ~isempty(chanlocfile)
                 chanlocfile = 'GSN-HydroCel-65-Fidu.sfp';
             case 129
                 chanlocfile = 'GSN-HydroCel-129-Fidu.sfp';
+            case 131
+                chanlocfile = 'GSN-HydroCel-131-Fidu.sfp';
             case 257
                 chanlocfile = 'GSN-HydroCel-257-Fidu.sfp';
             case 8
